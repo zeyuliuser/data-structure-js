@@ -170,6 +170,19 @@ function Graph() {
             }
         }
     }
+    //dijkstra
+    /**
+     * 1.init distance列表（下面为dist）所有元素都为INF，visited数组所有都为false
+     * 2.dist[src]=0 设置自己到自己距离为0
+     * 3.循环找出当前dist中最小路径，并标注为visited=>minDistance(dist,visited)//此时判断visited要为FALSE才可返回最短路径index
+     * 4.更新dist列表
+     * **条件
+     * **1.visited[v]为FALSE（当前元素未确定最小路径）
+     * **2.dist[u]不为INF（上一元素可联通src元素）
+     * **3.graph里u->v的有路径可走 graph[u][v]!=0
+     * **4.dist[u]+graph[u][v]<dist[v]
+     * 5.返回dist
+     */
     this.dijkstra = src => {
         let dist = [], vistied = [], length = this.graph.length;
         let minDistance = (dist, vistied) => {
@@ -195,6 +208,32 @@ function Graph() {
                     dist[v]=dist[u]+this.graph[u][v]
                 }
                 
+            }
+        }
+        return dist;
+    }
+    //floy
+    /**
+     * 1.init 复制图 graph=>dist
+     * 2.判断通过i,从j到k是否存在更短路径并更新
+     * 3.返回dist
+     */
+    this.floydWarshall = () => {
+        let dist = [], length = this.graph.length;
+        for (let i = 0; i < length; i++){
+            dist[i] = [];
+            for (let j = 0; j < length; j++){
+                dist[i][j]=this.graph[i][j]
+            }
+        }
+        // console.log(dist);
+        for (let i = 0; i < length; i++){
+            for (let j = 0; j < length; j++){
+                for (let k = 0; k < length; k++){
+                    if (dist[j][i] + dist[i][k] < dist[j][k]) {
+                        dist[j][k] = dist[j][i] + dist[i][k];
+                    }
+                }
             }
         }
         return dist;
@@ -232,13 +271,22 @@ var graph = new Graph();
 // d.set('B', [2, 2, 5]);
 // console.log(d.getItems())
 
+// graph.graph = [
+//     [0, 2, 4, 0, 0, 0],
+//     [0, 0, 1, 4, 2, 0],
+//     [0, 0, 0, 0, 3, 0],
+//     [0, 0, 0, 0, 0, 2],
+//     [0, 0, 0, 3, 0, 2],
+//     [0, 0, 0, 0, 0, 0]
+// ];
 graph.graph = [
-    [0, 2, 4, 0, 0, 0],
-    [0, 0, 1, 4, 2, 0],
-    [0, 0, 0, 0, 3, 0],
-    [0, 0, 0, 0, 0, 2],
-    [0, 0, 0, 3, 0, 2],
-    [0, 0, 0, 0, 0, 0]
+    [0, 2, 4, INF, INF, INF],
+    [INF, 0, 1, 4, 2, INF],
+    [INF, INF, 0, INF, 3, INF],
+    [INF, INF, INF, 0, INF, 2],
+    [INF, INF, INF, 3, 0, 2],
+    [INF, INF, INF, INF, INF, 0]
 ];
 
-console.log(graph.dijkstra(2))
+console.log(graph.floydWarshall())
+// graph.dijkstra(0)
