@@ -1,4 +1,102 @@
 const INF = Number.MAX_SAFE_INTEGER;
+//链表
+function LinkedList() {
+    function Node(element) {
+        this.element = element;
+        this.next = null;
+    }
+    let length = 0;
+    let head = null;
+
+    this.append = element => {
+        let node = new Node(element), current;
+        if (head === null) {
+            head = node;
+        } else {
+            current = head;
+            while (current.next) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        length++;
+    }
+
+    this.insert = (position, element) => {
+        if (position > -1 && position <= length) {
+            let node = new Node(element), current = head, previous, index = 0;
+            if (position === 0) {
+                node.next = current;
+                head = node;
+            } else {
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+            node.next = current;
+            previous.next = node;
+            }
+            length++;
+            return true;
+
+        } else {
+            return false;
+        }
+    }
+
+    this.removeAt = position => {
+        if (position > -1 && position < length) {
+            let current = head, previous, index = 0;
+            if (position === 0) {
+                head = current.next;
+            } else {
+                while (index++ < position) {
+                    previous = current;
+                    current = current.next;
+                }
+                previous.next = current.next;
+            }
+            length--;
+            return current.element;
+        } else {
+            return null;
+        }
+    }
+
+    this.remove = element => {
+        let index = this.indexOf(element);
+        return this.removeAt(index);
+    }
+    this.indexOf = element => {
+        let current = head;
+        index = 0;
+        while (current) {
+            if (element === current.element) {
+                return index;
+            }
+            index++;
+            current = current.next;
+        }
+        return -1;
+    }
+    this.isEmpty = _ => {
+        return length === 0;
+    }
+    this.size = _ => {
+        return length;
+    }
+    this.getHead = _ => {
+        return head;
+    }
+    this.toString = _ => {
+        let current = head, string = '';
+        while (current) {
+            string += current.element + (current.next ? '\n' : '');
+            current = current.next;
+        }
+        return string;
+    }
+}
 
 
 //栈
@@ -245,7 +343,7 @@ function printNode(value) {
     console.log('Visited vertex:'+value)
 }
 
-var graph = new Graph();
+// var graph = new Graph();
 // var myVer = ['A', 'B', 'C', 'D','E','F','G','H','I'];
 // for (let i in myVer) {
 //     graph.addVertex(myVer[i]);
@@ -279,14 +377,29 @@ var graph = new Graph();
 //     [0, 0, 0, 3, 0, 2],
 //     [0, 0, 0, 0, 0, 0]
 // ];
-graph.graph = [
-    [0, 2, 4, INF, INF, INF],
-    [INF, 0, 1, 4, 2, INF],
-    [INF, INF, 0, INF, 3, INF],
-    [INF, INF, INF, 0, INF, 2],
-    [INF, INF, INF, 3, 0, 2],
-    [INF, INF, INF, INF, INF, 0]
-];
+// graph.graph = [
+//     [0, 2, 4, INF, INF, INF],
+//     [INF, 0, 1, 4, 2, INF],
+//     [INF, INF, 0, INF, 3, INF],
+//     [INF, INF, INF, 0, INF, 2],
+//     [INF, INF, INF, 3, 0, 2],
+//     [INF, INF, INF, INF, INF, 0]
+// ];
 
-console.log(graph.floydWarshall())
+// console.log(graph.floydWarshall())
 // graph.dijkstra(0)
+
+
+//单向链表
+
+// let linkedList = new LinkedList();
+// linkedList.append('a');
+// linkedList.append('b');
+// linkedList.append('c');
+// linkedList.append('d');
+// linkedList.append('e');
+// linkedList.append('f');
+// linkedList.append('g');
+
+// console.log(linkedList.removeAt(3))
+// console.log(linkedList.toString())
