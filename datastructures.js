@@ -343,6 +343,87 @@ function printNode(value) {
     console.log('Visited vertex:'+value)
 }
 
+
+function ArrayList() {
+    let array = [];
+    this.insert = item => {
+        if (typeof item === 'object') {
+            array.push(...item);
+        } else {
+            array.push(item);
+        }
+        
+    }
+    this.toString = _ => {
+        return array.join();
+    }
+    this.quickSort = _ => {
+        quick(array, 0, array.length - 1);
+    }
+
+    //快速排序
+    function quick(array, left, right) {
+        let index;
+        if (array.length > 1) {
+            index = partition(array, left, right);
+            if (left < index - 1) {
+                quick(array, left, index - 1);
+            }
+            if (index < right) {
+                quick(array, index, right);
+            }
+        }
+    }
+    function partition(array, left, right) {
+        let pivot = array[Math.floor((right + left) / 2)],
+            i = left,
+            j = right;
+        while (i <= j) {
+            while (array[i] < pivot) {
+                i++;
+            }
+            while (array[j] > pivot) {
+                j--;
+            }
+            if (i <= j) {
+                [array[i], array[j]] = [array[j], array[i]];
+                i++;
+                j--;
+            }
+        }
+        return i;
+    }
+    //堆排序
+    this.heapSort = _ => {
+        let heapSize = array.length;
+        buildHeap(array);
+        while (heapSize > 1) {
+            heapSize--;
+            [array[0], array[heapSize]] = [array[heapSize], array[0]];
+            heapify(array, heapSize, 0);
+        }
+    }
+    function buildHeap(array) {
+        let heapSize = array.length;
+        for (let i =Math.floor(array.length / 2); i >= 0; i--){
+            heapify(array, heapSize, i);
+        }
+    }
+    function heapify(array, heapSize, i) {
+        let left = i * 2 + 1, right = i * 2 + 2, largest = i;
+        if (left < heapSize && array[left] > array[largest]) {
+            largest = left;
+        }
+        if (right < heapSize && array[right] > array[largest]) {
+            largest = right;
+        }
+        if (largest !== i) {
+            [array[i], array[largest]] = [array[largest], array[i]];
+            heapify(array, heapSize, largest);
+        }
+    }
+}
+
 // var graph = new Graph();
 // var myVer = ['A', 'B', 'C', 'D','E','F','G','H','I'];
 // for (let i in myVer) {
@@ -403,3 +484,12 @@ function printNode(value) {
 
 // console.log(linkedList.removeAt(3))
 // console.log(linkedList.toString())
+
+
+let arr = new ArrayList();
+arr.insert([3, 5, 1, 6, 4, 7, 2]);
+//快速排序
+// arr.quickSort();
+//堆排序
+arr.heapSort();
+console.log(arr.toString());
