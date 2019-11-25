@@ -424,6 +424,76 @@ function ArrayList() {
     }
 }
 
+//二叉树
+function BinarySearchTree() {
+    function Node (key){
+        this.key = key;
+        this.left = null;
+        this.right = null;
+    }
+    let root = null;
+    this.insert = key => {
+        let newNode = new Node(key);
+        if (root === null) {
+            root = newNode;
+        } else {
+            insertNode(root, newNode);
+        }
+    }
+    function insertNode(node, newNode) {
+        if (newNode.key < node.key) {
+            if (node.left === null) {
+                node.left = newNode;
+            } else {
+                insertNode(node.left, newNode);
+            }
+        } else {
+            if (node.right === null) {
+                node.right = newNode;
+            } else {
+                insertNode(node.right, newNode);
+            }
+        }
+    }
+    //中序遍历
+    this.inOrderTraverse = callback => {
+        inOrderTraverseNode(root, callback);
+    }
+    function inOrderTraverseNode(node, callback) {
+        if (node !== null) {
+            inOrderTraverseNode(node.left, callback);
+            callback(node.key);
+            inOrderTraverseNode(node.right, callback);
+        }
+    }
+    //后序遍历
+    this.postOrderTraverse = callback => {
+        postOrderTraverseNode(root, callback);
+    }
+    function postOrderTraverseNode(node, callback){
+        if (node !== null) {
+            postOrderTraverseNode(node.left, callback);
+            postOrderTraverseNode(node.right, callback);
+            callback(node.key);
+        }
+    }
+    //先序遍历
+    this.preOrderTraverse = callback => {
+        preOrderTraverseNode(root, callback);
+    }
+    function preOrderTraverseNode(node, callback) {
+        if (node != null) {
+            callback(node.key)
+            preOrderTraverseNode(node.left, callback);
+            preOrderTraverseNode(node.right, callback);
+        }
+    }
+
+}
+function printBSTNode(value) {
+    console.log(value);
+}
+
 // var graph = new Graph();
 // var myVer = ['A', 'B', 'C', 'D','E','F','G','H','I'];
 // for (let i in myVer) {
@@ -486,10 +556,30 @@ function ArrayList() {
 // console.log(linkedList.toString())
 
 
-let arr = new ArrayList();
-arr.insert([3, 5, 1, 6, 4, 7, 2]);
+// let arr = new ArrayList();
+// arr.insert([3, 5, 1, 6, 4, 7, 2]);
 //快速排序
 // arr.quickSort();
 //堆排序
-arr.heapSort();
-console.log(arr.toString());
+// arr.heapSort();
+// console.log(arr.toString());
+
+//二叉树
+let tree = new BinarySearchTree();
+tree.insert(11);
+tree.insert(7);
+tree.insert(15);
+tree.insert(5);
+tree.insert(3);
+tree.insert(9);
+tree.insert(8);
+tree.insert(10);
+tree.insert(13);
+tree.insert(12);
+tree.insert(14);
+tree.insert(20);
+tree.insert(18);
+tree.insert(25);
+tree.insert(16);
+tree.preOrderTraverse(printBSTNode);
+
